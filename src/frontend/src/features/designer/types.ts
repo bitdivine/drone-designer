@@ -8,7 +8,7 @@ export interface DroneDesignConfig {
 }
 
 export interface FrameConfig {
-  type: 'quadcopter' | 'hexacopter' | 'octocopter';
+  type: "quadcopter" | "hexacopter" | "octocopter";
   size: number; // in mm (diagonal motor-to-motor)
   weight: number; // in grams
 }
@@ -37,6 +37,6 @@ export interface FlightControllerConfig {
 }
 
 export interface CameraConfig {
-  type: 'none' | 'fpv' | 'hd' | 'payload';
+  type: "none" | "fpv" | "hd" | "payload";
   weight: number; // in grams
 }

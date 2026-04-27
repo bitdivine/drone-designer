@@ -1,7 +1,7 @@
-import { useGetCallerUserProfile } from '../../features/auth/useCurrentUser';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { User } from 'lucide-react';
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { User } from "lucide-react";
+import { useGetCallerUserProfile } from "../../features/auth/useCurrentUser";
 
 export default function SignedInBadge() {
   const { data: userProfile, isLoading } = useGetCallerUserProfile();
@@ -10,11 +10,11 @@ export default function SignedInBadge() {
     return null;
   }
 
-  const displayName = userProfile?.name || 'User';
+  const displayName = userProfile?.name || "User";
   const initials = displayName
-    .split(' ')
-    .map(n => n[0])
-    .join('')
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
     .toUpperCase()
     .slice(0, 2);
 

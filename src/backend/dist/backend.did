@@ -1,0 +1,26 @@
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfile = record {name: text;};
+type DroneDesign = 
+ record {
+   designData: text;
+   name: text;
+   timestamp: int;
+ };
+service : {
+  _initializeAccessControl: () -> ();
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  deleteDesign: (name: text) -> ();
+  getCallerUserProfile: () -> (opt UserProfile) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getDesign: (name: text) -> (opt DroneDesign) query;
+  getUserProfile: (user: principal) -> (opt UserProfile) query;
+  isCallerAdmin: () -> (bool) query;
+  listDesigns: () -> (vec DroneDesign) query;
+  saveCallerUserProfile: (profile: UserProfile) -> ();
+  saveDesign: (name: text, designData: text) -> ();
+}

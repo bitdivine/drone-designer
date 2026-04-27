@@ -1,34 +1,69 @@
-import { useDesignStore } from '../../features/designer/DesignStore';
 import {
-  FRAME_TYPES,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { useDesignStore } from "../../features/designer/DesignStore";
+import {
+  BATTERY_CAPACITIES,
+  BATTERY_CELLS,
+  CAMERA_TYPES,
   FRAME_SIZES,
+  FRAME_TYPES,
   MOTOR_KV_OPTIONS,
   PROP_SIZES,
-  BATTERY_CELLS,
-  BATTERY_CAPACITIES,
-  CAMERA_TYPES,
-} from '../../features/designer/defaults';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
+} from "../../features/designer/defaults";
 
 export default function ComponentEditorPanel() {
-  const { design, updateFrame, updateMotors, updatePropellers, updateBattery, updateFlightController, updateCamera } = useDesignStore();
+  const {
+    design,
+    updateFrame,
+    updateMotors,
+    updatePropellers,
+    updateBattery,
+    updateFlightController,
+    updateCamera,
+  } = useDesignStore();
 
   return (
     <div className="p-6 space-y-6">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Components</h2>
-        <p className="text-sm text-muted-foreground mt-1">Configure your drone build</p>
+        <p className="text-sm text-muted-foreground mt-1">
+          Configure your drone build
+        </p>
       </div>
 
       <Separator />
 
-      <Accordion type="multiple" defaultValue={['frame', 'motors', 'propellers', 'battery', 'fc', 'camera']} className="space-y-2">
+      <Accordion
+        type="multiple"
+        defaultValue={[
+          "frame",
+          "motors",
+          "propellers",
+          "battery",
+          "fc",
+          "camera",
+        ]}
+        className="space-y-2"
+      >
         {/* Frame */}
-        <AccordionItem value="frame" className="border rounded-lg px-4 bg-card/50">
+        <AccordionItem
+          value="frame"
+          className="border rounded-lg px-4 bg-card/50"
+        >
           <AccordionTrigger className="hover:no-underline">
             <span className="font-semibold">Frame</span>
           </AccordionTrigger>
@@ -39,7 +74,8 @@ export default function ComponentEditorPanel() {
                 value={design.frame.type}
                 onValueChange={(value) => {
                   updateFrame({ type: value as any });
-                  const motorCount = value === 'quadcopter' ? 4 : value === 'hexacopter' ? 6 : 8;
+                  const motorCount =
+                    value === "quadcopter" ? 4 : value === "hexacopter" ? 6 : 8;
                   updateMotors({ quantity: motorCount });
                 }}
               >
@@ -47,8 +83,10 @@ export default function ComponentEditorPanel() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {FRAME_TYPES.map(type => (
-                    <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
+                  {FRAME_TYPES.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -58,14 +96,18 @@ export default function ComponentEditorPanel() {
               <Label htmlFor="frame-size">Size</Label>
               <Select
                 value={design.frame.size.toString()}
-                onValueChange={(value) => updateFrame({ size: parseInt(value) })}
+                onValueChange={(value) =>
+                  updateFrame({ size: Number.parseInt(value) })
+                }
               >
                 <SelectTrigger id="frame-size">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {FRAME_SIZES.map(size => (
-                    <SelectItem key={size.value} value={size.value.toString()}>{size.label}</SelectItem>
+                  {FRAME_SIZES.map((size) => (
+                    <SelectItem key={size.value} value={size.value.toString()}>
+                      {size.label}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -77,14 +119,19 @@ export default function ComponentEditorPanel() {
                 id="frame-weight"
                 type="number"
                 value={design.frame.weight}
-                onChange={(e) => updateFrame({ weight: parseInt(e.target.value) || 0 })}
+                onChange={(e) =>
+                  updateFrame({ weight: Number.parseInt(e.target.value) || 0 })
+                }
               />
             </div>
           </AccordionContent>
         </AccordionItem>
 
         {/* Motors */}
-        <AccordionItem value="motors" className="border rounded-lg px-4 bg-card/50">
+        <AccordionItem
+          value="motors"
+          className="border rounded-lg px-4 bg-card/50"
+        >
           <AccordionTrigger className="hover:no-underline">
             <span className="font-semibold">Motors</span>
           </AccordionTrigger>
@@ -95,7 +142,11 @@ export default function ComponentEditorPanel() {
                 id="motor-quantity"
                 type="number"
                 value={design.motors.quantity}
-                onChange={(e) => updateMotors({ quantity: parseInt(e.target.value) || 0 })}
+                onChange={(e) =>
+                  updateMotors({
+                    quantity: Number.parseInt(e.target.value) || 0,
+                  })
+                }
                 disabled
               />
             </div>
@@ -104,14 +155,18 @@ export default function ComponentEditorPanel() {
               <Label htmlFor="motor-kv">KV Rating</Label>
               <Select
                 value={design.motors.kv.toString()}
-                onValueChange={(value) => updateMotors({ kv: parseInt(value) })}
+                onValueChange={(value) =>
+                  updateMotors({ kv: Number.parseInt(value) })
+                }
               >
                 <SelectTrigger id="motor-kv">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {MOTOR_KV_OPTIONS.map(kv => (
-                    <SelectItem key={kv.value} value={kv.value.toString()}>{kv.label}</SelectItem>
+                  {MOTOR_KV_OPTIONS.map((kv) => (
+                    <SelectItem key={kv.value} value={kv.value.toString()}>
+                      {kv.label}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -123,14 +178,19 @@ export default function ComponentEditorPanel() {
                 id="motor-weight"
                 type="number"
                 value={design.motors.weight}
-                onChange={(e) => updateMotors({ weight: parseInt(e.target.value) || 0 })}
+                onChange={(e) =>
+                  updateMotors({ weight: Number.parseInt(e.target.value) || 0 })
+                }
               />
             </div>
           </AccordionContent>
         </AccordionItem>
 
         {/* Propellers */}
-        <AccordionItem value="propellers" className="border rounded-lg px-4 bg-card/50">
+        <AccordionItem
+          value="propellers"
+          className="border rounded-lg px-4 bg-card/50"
+        >
           <AccordionTrigger className="hover:no-underline">
             <span className="font-semibold">Propellers</span>
           </AccordionTrigger>
@@ -139,14 +199,18 @@ export default function ComponentEditorPanel() {
               <Label htmlFor="prop-size">Size</Label>
               <Select
                 value={design.propellers.size.toString()}
-                onValueChange={(value) => updatePropellers({ size: parseInt(value) })}
+                onValueChange={(value) =>
+                  updatePropellers({ size: Number.parseInt(value) })
+                }
               >
                 <SelectTrigger id="prop-size">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {PROP_SIZES.map(size => (
-                    <SelectItem key={size.value} value={size.value.toString()}>{size.label}</SelectItem>
+                  {PROP_SIZES.map((size) => (
+                    <SelectItem key={size.value} value={size.value.toString()}>
+                      {size.label}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -159,7 +223,11 @@ export default function ComponentEditorPanel() {
                 type="number"
                 step="0.1"
                 value={design.propellers.pitch}
-                onChange={(e) => updatePropellers({ pitch: parseFloat(e.target.value) || 0 })}
+                onChange={(e) =>
+                  updatePropellers({
+                    pitch: Number.parseFloat(e.target.value) || 0,
+                  })
+                }
               />
             </div>
 
@@ -169,14 +237,21 @@ export default function ComponentEditorPanel() {
                 id="prop-weight"
                 type="number"
                 value={design.propellers.weight}
-                onChange={(e) => updatePropellers({ weight: parseInt(e.target.value) || 0 })}
+                onChange={(e) =>
+                  updatePropellers({
+                    weight: Number.parseInt(e.target.value) || 0,
+                  })
+                }
               />
             </div>
           </AccordionContent>
         </AccordionItem>
 
         {/* Battery */}
-        <AccordionItem value="battery" className="border rounded-lg px-4 bg-card/50">
+        <AccordionItem
+          value="battery"
+          className="border rounded-lg px-4 bg-card/50"
+        >
           <AccordionTrigger className="hover:no-underline">
             <span className="font-semibold">Battery</span>
           </AccordionTrigger>
@@ -185,14 +260,18 @@ export default function ComponentEditorPanel() {
               <Label htmlFor="battery-cells">Cell Count</Label>
               <Select
                 value={design.battery.cells.toString()}
-                onValueChange={(value) => updateBattery({ cells: parseInt(value) })}
+                onValueChange={(value) =>
+                  updateBattery({ cells: Number.parseInt(value) })
+                }
               >
                 <SelectTrigger id="battery-cells">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {BATTERY_CELLS.map(cell => (
-                    <SelectItem key={cell.value} value={cell.value.toString()}>{cell.label}</SelectItem>
+                  {BATTERY_CELLS.map((cell) => (
+                    <SelectItem key={cell.value} value={cell.value.toString()}>
+                      {cell.label}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -202,14 +281,18 @@ export default function ComponentEditorPanel() {
               <Label htmlFor="battery-capacity">Capacity</Label>
               <Select
                 value={design.battery.capacity.toString()}
-                onValueChange={(value) => updateBattery({ capacity: parseInt(value) })}
+                onValueChange={(value) =>
+                  updateBattery({ capacity: Number.parseInt(value) })
+                }
               >
                 <SelectTrigger id="battery-capacity">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {BATTERY_CAPACITIES.map(cap => (
-                    <SelectItem key={cap.value} value={cap.value.toString()}>{cap.label}</SelectItem>
+                  {BATTERY_CAPACITIES.map((cap) => (
+                    <SelectItem key={cap.value} value={cap.value.toString()}>
+                      {cap.label}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -221,7 +304,11 @@ export default function ComponentEditorPanel() {
                 id="battery-weight"
                 type="number"
                 value={design.battery.weight}
-                onChange={(e) => updateBattery({ weight: parseInt(e.target.value) || 0 })}
+                onChange={(e) =>
+                  updateBattery({
+                    weight: Number.parseInt(e.target.value) || 0,
+                  })
+                }
               />
             </div>
           </AccordionContent>
@@ -238,7 +325,9 @@ export default function ComponentEditorPanel() {
               <Input
                 id="fc-name"
                 value={design.flightController.name}
-                onChange={(e) => updateFlightController({ name: e.target.value })}
+                onChange={(e) =>
+                  updateFlightController({ name: e.target.value })
+                }
               />
             </div>
 
@@ -248,14 +337,21 @@ export default function ComponentEditorPanel() {
                 id="fc-weight"
                 type="number"
                 value={design.flightController.weight}
-                onChange={(e) => updateFlightController({ weight: parseInt(e.target.value) || 0 })}
+                onChange={(e) =>
+                  updateFlightController({
+                    weight: Number.parseInt(e.target.value) || 0,
+                  })
+                }
               />
             </div>
           </AccordionContent>
         </AccordionItem>
 
         {/* Camera */}
-        <AccordionItem value="camera" className="border rounded-lg px-4 bg-card/50">
+        <AccordionItem
+          value="camera"
+          className="border rounded-lg px-4 bg-card/50"
+        >
           <AccordionTrigger className="hover:no-underline">
             <span className="font-semibold">Camera / Payload</span>
           </AccordionTrigger>
@@ -270,8 +366,10 @@ export default function ComponentEditorPanel() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {CAMERA_TYPES.map(type => (
-                    <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
+                  {CAMERA_TYPES.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -283,7 +381,9 @@ export default function ComponentEditorPanel() {
                 id="camera-weight"
                 type="number"
                 value={design.camera.weight}
-                onChange={(e) => updateCamera({ weight: parseInt(e.target.value) || 0 })}
+                onChange={(e) =>
+                  updateCamera({ weight: Number.parseInt(e.target.value) || 0 })
+                }
               />
             </div>
           </AccordionContent>

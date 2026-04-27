@@ -1,8 +1,8 @@
-import { Link } from '@tanstack/react-router';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Zap, Box, Calculator, Save } from 'lucide-react';
-import { SiGithub } from 'react-icons/si';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "@tanstack/react-router";
+import { ArrowRight, Box, Calculator, Save, Zap } from "lucide-react";
+import { SiGithub } from "react-icons/si";
 
 export default function Landing() {
   const currentYear = new Date().getFullYear();
@@ -21,19 +21,32 @@ export default function Landing() {
                   <span className="block text-primary mt-2">Perfect Drone</span>
                 </h1>
                 <p className="text-lg text-muted-foreground md:text-xl max-w-2xl">
-                  Build, visualize, and optimize custom drone configurations with real-time 3D preview and performance calculations.
+                  Build, visualize, and optimize custom drone configurations
+                  with real-time 3D preview and performance calculations.
                 </p>
               </div>
-              
+
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/workspace">
-                  <Button size="lg" className="gap-2 text-base w-full sm:w-auto">
+                  <Button
+                    size="lg"
+                    className="gap-2 text-base w-full sm:w-auto"
+                  >
                     Start Designing
                     <ArrowRight className="h-5 w-5" />
                   </Button>
                 </Link>
-                <Button size="lg" variant="outline" className="gap-2 text-base w-full sm:w-auto" asChild>
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="gap-2 text-base w-full sm:w-auto"
+                  asChild
+                >
+                  <a
+                    href="https://github.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <SiGithub className="h-5 w-5" />
                     View on GitHub
                   </a>
@@ -61,7 +74,8 @@ export default function Landing() {
               Everything You Need
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Professional-grade tools for designing and optimizing your custom drone builds.
+              Professional-grade tools for designing and optimizing your custom
+              drone builds.
             </p>
           </div>
 
@@ -74,7 +88,9 @@ export default function Landing() {
                 <div className="space-y-2">
                   <h3 className="text-xl font-semibold">Component Library</h3>
                   <p className="text-sm text-muted-foreground">
-                    Choose from frames, motors, props, batteries, flight controllers, and cameras to build your perfect configuration.
+                    Choose from frames, motors, props, batteries, flight
+                    controllers, and cameras to build your perfect
+                    configuration.
                   </p>
                 </div>
               </CardContent>
@@ -88,7 +104,8 @@ export default function Landing() {
                 <div className="space-y-2">
                   <h3 className="text-xl font-semibold">Live 3D Preview</h3>
                   <p className="text-sm text-muted-foreground">
-                    See your drone design in real-time with interactive 3D visualization. Rotate, zoom, and inspect every detail.
+                    See your drone design in real-time with interactive 3D
+                    visualization. Rotate, zoom, and inspect every detail.
                   </p>
                 </div>
               </CardContent>
@@ -102,7 +119,8 @@ export default function Landing() {
                 <div className="space-y-2">
                   <h3 className="text-xl font-semibold">Performance Metrics</h3>
                   <p className="text-sm text-muted-foreground">
-                    Calculate weight, thrust-to-weight ratio, and estimated flight time with transparent assumptions.
+                    Calculate weight, thrust-to-weight ratio, and estimated
+                    flight time with transparent assumptions.
                   </p>
                 </div>
               </CardContent>
@@ -116,7 +134,8 @@ export default function Landing() {
                 <div className="space-y-2">
                   <h3 className="text-xl font-semibold">Save & Share</h3>
                   <p className="text-sm text-muted-foreground">
-                    Save your designs securely on-chain with Internet Identity. Access them from anywhere, anytime.
+                    Save your designs securely on-chain with Internet Identity.
+                    Access them from anywhere, anytime.
                   </p>
                 </div>
               </CardContent>
@@ -133,7 +152,8 @@ export default function Landing() {
               Ready to Build Your Drone?
             </h2>
             <p className="text-lg text-muted-foreground">
-              Start designing now with our intuitive workspace. No installation required.
+              Start designing now with our intuitive workspace. No installation
+              required.
             </p>
             <Link to="/workspace">
               <Button size="lg" className="gap-2 text-base">
@@ -151,7 +171,7 @@ export default function Landing() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
             <p>© {currentYear} Drone Designer. All rights reserved.</p>
             <p>
-              Built with ❤️ using{' '}
+              Built with ❤️ using{" "}
               <a
                 href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
                 target="_blank"

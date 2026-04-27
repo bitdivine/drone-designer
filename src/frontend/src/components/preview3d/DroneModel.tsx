@@ -1,19 +1,19 @@
-import { useMemo } from 'react';
-import type { DroneDesignConfig } from '../../features/designer/types';
+import { useMemo } from "react";
+import type { DroneDesignConfig } from "../../features/designer/types";
 
 interface DroneModelProps {
   design: DroneDesignConfig;
 }
 
 export default function DroneModel({ design }: DroneModelProps) {
-  const { frame, motors, propellers, battery, camera } = design;
+  const { frame, motors, propellers, camera } = design;
 
   // Calculate arm positions based on frame type
   const armPositions = useMemo(() => {
     const motorCount = motors.quantity;
     const armLength = (frame.size / 1000) * 0.5; // Convert mm to meters and get radius
     const positions: [number, number, number][] = [];
-    
+
     for (let i = 0; i < motorCount; i++) {
       const angle = (i * 2 * Math.PI) / motorCount;
       positions.push([
@@ -22,7 +22,7 @@ export default function DroneModel({ design }: DroneModelProps) {
         Math.sin(angle) * armLength,
       ]);
     }
-    
+
     return positions;
   }, [motors.quantity, frame.size]);
 
@@ -50,54 +50,69 @@ export default function DroneModel({ design }: DroneModelProps) {
       </mesh>
 
       {/* Camera (if present) */}
-      {camera.type !== 'none' && (
+      {camera.type !== "none" && (
         <mesh position={[0, 0, frameScale * 0.1]} castShadow>
           <boxGeometry args={[0.03, 0.025, 0.02]} />
-          <meshStandardMaterial 
-            color={camera.type === 'payload' ? '#8b4513' : '#1a1a1a'} 
-            metalness={0.4} 
-            roughness={0.6} 
+          <meshStandardMaterial
+            color={camera.type === "payload" ? "#8b4513" : "#1a1a1a"}
+            metalness={0.4}
+            roughness={0.6}
           />
         </mesh>
       )}
 
       {/* Arms, motors, and propellers */}
       {armPositions.map((pos, i) => {
-        const [x, y, z] = pos;
+        const [x, _y, z] = pos;
         const armAngle = Math.atan2(z, x);
-        
+        const posKey = `${x.toFixed(4)}-${z.toFixed(4)}`;
+
         return (
-          <group key={i}>
+          <group key={posKey}>
             {/* Arm */}
-            <mesh 
-              position={[x / 2, 0, z / 2]} 
+            <mesh
+              position={[x / 2, 0, z / 2]}
               rotation={[0, armAngle, 0]}
               castShadow
             >
               <boxGeometry args={[Math.sqrt(x * x + z * z), 0.015, 0.02]} />
-              <meshStandardMaterial color="#3a3a3a" metalness={0.5} roughness={0.5} />
+              <meshStandardMaterial
+                color="#3a3a3a"
+                metalness={0.5}
+                roughness={0.5}
+              />
             </mesh>
 
             {/* Motor */}
             <mesh position={[x, 0, z]} castShadow>
               <cylinderGeometry args={[0.02, 0.025, 0.04, 16]} />
-              <meshStandardMaterial color="#4a4a4a" metalness={0.7} roughness={0.3} />
+              <meshStandardMaterial
+                color="#4a4a4a"
+                metalness={0.7}
+                roughness={0.3}
+              />
             </mesh>
 
             {/* Motor shaft */}
             <mesh position={[x, 0.03, z]}>
               <cylinderGeometry args={[0.003, 0.003, 0.02, 8]} />
-              <meshStandardMaterial color="#666666" metalness={0.8} roughness={0.2} />
+              <meshStandardMaterial
+                color="#666666"
+                metalness={0.8}
+                roughness={0.2}
+              />
             </mesh>
 
             {/* Propeller */}
             <group position={[x, 0.04, z]} rotation={[0, i * 0.5, 0]}>
               {/* Prop blade 1 */}
               <mesh rotation={[0, 0, 0]}>
-                <boxGeometry args={[0.08 * propScale, 0.002, 0.015 * propScale]} />
-                <meshStandardMaterial 
-                  color={i % 2 === 0 ? '#ff6b35' : '#004e89'} 
-                  metalness={0.3} 
+                <boxGeometry
+                  args={[0.08 * propScale, 0.002, 0.015 * propScale]}
+                />
+                <meshStandardMaterial
+                  color={i % 2 === 0 ? "#ff6b35" : "#004e89"}
+                  metalness={0.3}
                   roughness={0.6}
                   transparent
                   opacity={0.9}
@@ -105,10 +120,12 @@ export default function DroneModel({ design }: DroneModelProps) {
               </mesh>
               {/* Prop blade 2 */}
               <mesh rotation={[0, Math.PI / 2, 0]}>
-                <boxGeometry args={[0.08 * propScale, 0.002, 0.015 * propScale]} />
-                <meshStandardMaterial 
-                  color={i % 2 === 0 ? '#ff6b35' : '#004e89'} 
-                  metalness={0.3} 
+                <boxGeometry
+                  args={[0.08 * propScale, 0.002, 0.015 * propScale]}
+                />
+                <meshStandardMaterial
+                  color={i % 2 === 0 ? "#ff6b35" : "#004e89"}
+                  metalness={0.3}
                   roughness={0.6}
                   transparent
                   opacity={0.9}
@@ -117,7 +134,11 @@ export default function DroneModel({ design }: DroneModelProps) {
               {/* Prop center */}
               <mesh>
                 <cylinderGeometry args={[0.01, 0.01, 0.005, 16]} />
-                <meshStandardMaterial color="#2a2a2a" metalness={0.6} roughness={0.4} />
+                <meshStandardMaterial
+                  color="#2a2a2a"
+                  metalness={0.6}
+                  roughness={0.4}
+                />
               </mesh>
             </group>
           </group>

@@ -1,8 +1,12 @@
-import ComponentEditorPanel from '../components/designer/ComponentEditorPanel';
-import DronePreviewCanvas from '../components/preview3d/DronePreviewCanvas';
-import DesignSummaryPanel from '../components/summary/DesignSummaryPanel';
-import MyDesignsPanel from '../components/designs/MyDesignsPanel';
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import ComponentEditorPanel from "../components/designer/ComponentEditorPanel";
+import MyDesignsPanel from "../components/designs/MyDesignsPanel";
+import DronePreviewCanvas from "../components/preview3d/DronePreviewCanvas";
+import DesignSummaryPanel from "../components/summary/DesignSummaryPanel";
 
 export default function Workspace() {
   return (

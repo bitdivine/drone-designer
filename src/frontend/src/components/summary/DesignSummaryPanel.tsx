@@ -1,10 +1,15 @@
-import { useDesignStore } from '../../features/designer/DesignStore';
-import { calculatePerformance } from '../../features/summary/calc';
-import { getAssumptionDescriptions } from '../../features/summary/assumptions';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Info } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
+import { useDesignStore } from "../../features/designer/DesignStore";
+import { getAssumptionDescriptions } from "../../features/summary/assumptions";
+import { calculatePerformance } from "../../features/summary/calc";
 
 export default function DesignSummaryPanel() {
   const { design } = useDesignStore();
@@ -12,16 +17,16 @@ export default function DesignSummaryPanel() {
   const assumptions = getAssumptionDescriptions();
 
   const getThrustToWeightColor = (ratio: number) => {
-    if (ratio < 1.5) return 'text-destructive';
-    if (ratio < 2.5) return 'text-yellow-500';
-    return 'text-green-500';
+    if (ratio < 1.5) return "text-destructive";
+    if (ratio < 2.5) return "text-yellow-500";
+    return "text-green-500";
   };
 
   const getThrustToWeightLabel = (ratio: number) => {
-    if (ratio < 1.5) return 'Underpowered';
-    if (ratio < 2.5) return 'Adequate';
-    if (ratio < 4) return 'Good';
-    return 'Excellent';
+    if (ratio < 1.5) return "Underpowered";
+    if (ratio < 2.5) return "Adequate";
+    if (ratio < 4) return "Good";
+    return "Excellent";
   };
 
   return (
@@ -37,10 +42,14 @@ export default function DesignSummaryPanel() {
         {/* Total Weight */}
         <Card className="bg-card/50">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Weight</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Total Weight
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{metrics.totalWeight.toFixed(0)}g</div>
+            <div className="text-3xl font-bold">
+              {metrics.totalWeight.toFixed(0)}g
+            </div>
             <p className="text-xs text-muted-foreground mt-1">
               {(metrics.totalWeight / 1000).toFixed(2)} kg
             </p>
@@ -50,10 +59,14 @@ export default function DesignSummaryPanel() {
         {/* Total Thrust */}
         <Card className="bg-card/50">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Thrust</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Total Thrust
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{metrics.totalThrust.toFixed(0)}g</div>
+            <div className="text-3xl font-bold">
+              {metrics.totalThrust.toFixed(0)}g
+            </div>
             <p className="text-xs text-muted-foreground mt-1">
               {(metrics.totalThrust / 1000).toFixed(2)} kg
             </p>
@@ -68,7 +81,9 @@ export default function DesignSummaryPanel() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className={`text-3xl font-bold ${getThrustToWeightColor(metrics.thrustToWeight)}`}>
+            <div
+              className={`text-3xl font-bold ${getThrustToWeightColor(metrics.thrustToWeight)}`}
+            >
               {metrics.thrustToWeight.toFixed(2)}:1
             </div>
             <p className="text-xs text-muted-foreground mt-1">
@@ -86,10 +101,13 @@ export default function DesignSummaryPanel() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">
-              {metrics.flightTimeMin.toFixed(0)}-{metrics.flightTimeMax.toFixed(0)}
+              {metrics.flightTimeMin.toFixed(0)}-
+              {metrics.flightTimeMax.toFixed(0)}
               <span className="text-lg ml-1">min</span>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">At hover throttle</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              At hover throttle
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -103,8 +121,8 @@ export default function DesignSummaryPanel() {
           <h3 className="text-sm font-semibold">Calculation Assumptions</h3>
         </div>
         <ul className="space-y-2 text-xs text-muted-foreground">
-          {assumptions.map((assumption, i) => (
-            <li key={i} className="flex items-start gap-2">
+          {assumptions.map((assumption) => (
+            <li key={assumption} className="flex items-start gap-2">
               <span className="text-primary mt-0.5">•</span>
               <span>{assumption}</span>
             </li>

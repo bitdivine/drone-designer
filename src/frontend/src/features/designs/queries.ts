@@ -1,20 +1,20 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useActor } from '../../hooks/useActor';
-import type { DroneDesign } from '../../backend';
-import { serializeDesign, deserializeDesign } from './serialization';
-import type { DroneDesignConfig } from '../designer/types';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { DroneDesign } from "../../backend";
+import { useActor } from "../../hooks/useActor";
+import type { DroneDesignConfig } from "../designer/types";
+import { deserializeDesign, serializeDesign } from "./serialization";
 
 export function useListDesigns() {
   const { actor, isFetching: actorFetching } = useActor();
 
   return useQuery<DroneDesign[]>({
-    queryKey: ['designs'],
+    queryKey: ["designs"],
     queryFn: async () => {
       if (!actor) return [];
       try {
         return await actor.listDesigns();
       } catch (error: any) {
-        if (error.message?.includes('Unauthorized')) {
+        if (error.message?.includes("Unauthorized")) {
           return [];
         }
         throw error;
@@ -28,7 +28,7 @@ export function useGetDesign(name: string) {
   const { actor } = useActor();
 
   return useQuery<DroneDesignConfig | null>({
-    queryKey: ['design', name],
+    queryKey: ["design", name],
     queryFn: async () => {
       if (!actor || !name) return null;
       const design = await actor.getDesign(name);
@@ -44,13 +44,16 @@ export function useSaveDesign() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ name, config }: { name: string; config: DroneDesignConfig }) => {
-      if (!actor) throw new Error('Not authenticated');
+    mutationFn: async ({
+      name,
+      config,
+    }: { name: string; config: DroneDesignConfig }) => {
+      if (!actor) throw new Error("Not authenticated");
       const designData = serializeDesign(config);
       return actor.saveDesign(name, designData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['designs'] });
+      queryClient.invalidateQueries({ queryKey: ["designs"] });
     },
   });
 }
@@ -61,11 +64,11 @@ export function useDeleteDesign() {
 
   return useMutation({
     mutationFn: async (name: string) => {
-      if (!actor) throw new Error('Not authenticated');
+      if (!actor) throw new Error("Not authenticated");
       return actor.deleteDesign(name);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['designs'] });
+      queryClient.invalidateQueries({ queryKey: ["designs"] });
     },
   });
 }

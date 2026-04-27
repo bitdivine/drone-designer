@@ -1,9 +1,14 @@
-import { RouterProvider, createRouter, createRootRoute, createRoute } from '@tanstack/react-router';
-import { ThemeProvider } from 'next-themes';
-import Landing from './pages/Landing';
-import Workspace from './pages/Workspace';
-import AppShell from './components/AppShell';
-import { DesignStoreProvider } from './features/designer/DesignStore';
+import {
+  RouterProvider,
+  createRootRoute,
+  createRoute,
+  createRouter,
+} from "@tanstack/react-router";
+import { ThemeProvider } from "next-themes";
+import AppShell from "./components/AppShell";
+import { DesignStoreProvider } from "./features/designer/DesignStore";
+import Landing from "./pages/Landing";
+import Workspace from "./pages/Workspace";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -15,13 +20,13 @@ const rootRoute = createRootRoute({
 
 const landingRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/',
+  path: "/",
   component: Landing,
 });
 
 const workspaceRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/workspace',
+  path: "/workspace",
   component: () => (
     <DesignStoreProvider>
       <Workspace />
@@ -33,7 +38,7 @@ const routeTree = rootRoute.addChildren([landingRoute, workspaceRoute]);
 
 const router = createRouter({ routeTree });
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
   }

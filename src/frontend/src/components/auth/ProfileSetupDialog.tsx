@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useInternetIdentity } from '../../hooks/useInternetIdentity';
-import { useGetCallerUserProfile, useSaveCallerUserProfile } from '../../features/auth/useCurrentUser';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,20 +6,30 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useEffect, useState } from "react";
+import {
+  useGetCallerUserProfile,
+  useSaveCallerUserProfile,
+} from "../../features/auth/useCurrentUser";
+import { useInternetIdentity } from "../../hooks/useInternetIdentity";
 
 export default function ProfileSetupDialog() {
   const { identity } = useInternetIdentity();
-  const { data: userProfile, isLoading: profileLoading, isFetched } = useGetCallerUserProfile();
+  const {
+    data: userProfile,
+    isLoading: profileLoading,
+    isFetched,
+  } = useGetCallerUserProfile();
   const saveProfile = useSaveCallerUserProfile();
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [open, setOpen] = useState(false);
 
   const isAuthenticated = !!identity;
-  const showProfileSetup = isAuthenticated && !profileLoading && isFetched && userProfile === null;
+  const showProfileSetup =
+    isAuthenticated && !profileLoading && isFetched && userProfile === null;
 
   useEffect(() => {
     setOpen(showProfileSetup);
@@ -29,19 +37,22 @@ export default function ProfileSetupDialog() {
 
   const handleSave = async () => {
     if (!name.trim()) return;
-    
+
     try {
       await saveProfile.mutateAsync({ name: name.trim() });
       setOpen(false);
-      setName('');
+      setName("");
     } catch (error) {
-      console.error('Failed to save profile:', error);
+      console.error("Failed to save profile:", error);
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md" onInteractOutside={(e) => e.preventDefault()}>
+      <DialogContent
+        className="sm:max-w-md"
+        onInteractOutside={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>Welcome to Drone Designer</DialogTitle>
           <DialogDescription>
@@ -57,7 +68,7 @@ export default function ProfileSetupDialog() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && name.trim()) {
+                if (e.key === "Enter" && name.trim()) {
                   handleSave();
                 }
               }}
@@ -71,7 +82,7 @@ export default function ProfileSetupDialog() {
             disabled={!name.trim() || saveProfile.isPending}
             className="w-full"
           >
-            {saveProfile.isPending ? 'Saving...' : 'Continue'}
+            {saveProfile.isPending ? "Saving..." : "Continue"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,23 +1,3 @@
-import { useState } from 'react';
-import { useInternetIdentity } from '../../hooks/useInternetIdentity';
-import { useDesignStore } from '../../features/designer/DesignStore';
-import { useListDesigns, useSaveDesign, useDeleteDesign } from '../../features/designs/queries';
-import { deserializeDesign } from '../../features/designs/serialization';
-import { getAuthGatingMessage } from '../../features/designs/authGating';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,9 +8,33 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Save, FolderOpen, Trash2, Clock } from 'lucide-react';
-import { toast } from 'sonner';
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Clock, FolderOpen, Save, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useDesignStore } from "../../features/designer/DesignStore";
+import { getAuthGatingMessage } from "../../features/designs/authGating";
+import {
+  useDeleteDesign,
+  useListDesigns,
+  useSaveDesign,
+} from "../../features/designs/queries";
+import { deserializeDesign } from "../../features/designs/serialization";
+import { useInternetIdentity } from "../../hooks/useInternetIdentity";
 
 export default function MyDesignsPanel() {
   const { identity } = useInternetIdentity();
@@ -38,15 +42,15 @@ export default function MyDesignsPanel() {
   const { data: designs = [], isLoading } = useListDesigns();
   const saveDesignMutation = useSaveDesign();
   const deleteDesignMutation = useDeleteDesign();
-  
+
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
-  const [designName, setDesignName] = useState('');
+  const [designName, setDesignName] = useState("");
 
   const isAuthenticated = !!identity;
 
   const handleSave = async () => {
     if (!designName.trim()) {
-      toast.error('Please enter a design name');
+      toast.error("Please enter a design name");
       return;
     }
 
@@ -57,9 +61,9 @@ export default function MyDesignsPanel() {
       });
       toast.success(`Design "${designName}" saved successfully`);
       setSaveDialogOpen(false);
-      setDesignName('');
+      setDesignName("");
     } catch (error: any) {
-      toast.error(error.message || 'Failed to save design');
+      toast.error(error.message || "Failed to save design");
     }
   };
 
@@ -67,9 +71,9 @@ export default function MyDesignsPanel() {
     try {
       const config = deserializeDesign(designData);
       loadDesign(config);
-      toast.success('Design loaded successfully');
-    } catch (error) {
-      toast.error('Failed to load design');
+      toast.success("Design loaded successfully");
+    } catch (_error) {
+      toast.error("Failed to load design");
     }
   };
 
@@ -78,13 +82,13 @@ export default function MyDesignsPanel() {
       await deleteDesignMutation.mutateAsync(name);
       toast.success(`Design "${name}" deleted`);
     } catch (error: any) {
-      toast.error(error.message || 'Failed to delete design');
+      toast.error(error.message || "Failed to delete design");
     }
   };
 
   const formatTimestamp = (timestamp: bigint) => {
     const date = new Date(Number(timestamp) / 1_000_000); // Convert nanoseconds to milliseconds
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
   };
 
   return (
@@ -92,7 +96,9 @@ export default function MyDesignsPanel() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">My Designs</h2>
-          <p className="text-sm text-muted-foreground mt-1">Save and manage your builds</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Save and manage your builds
+          </p>
         </div>
       </div>
 
@@ -122,7 +128,7 @@ export default function MyDesignsPanel() {
                 value={designName}
                 onChange={(e) => setDesignName(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' && designName.trim()) {
+                  if (e.key === "Enter" && designName.trim()) {
                     handleSave();
                   }
                 }}
@@ -135,7 +141,7 @@ export default function MyDesignsPanel() {
               onClick={handleSave}
               disabled={!designName.trim() || saveDesignMutation.isPending}
             >
-              {saveDesignMutation.isPending ? 'Saving...' : 'Save Design'}
+              {saveDesignMutation.isPending ? "Saving..." : "Save Design"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -144,7 +150,7 @@ export default function MyDesignsPanel() {
       {!isAuthenticated && (
         <Card className="bg-muted/50 border-dashed">
           <CardContent className="pt-6 text-center text-sm text-muted-foreground">
-            {getAuthGatingMessage('list')}
+            {getAuthGatingMessage("list")}
           </CardContent>
         </Card>
       )}
@@ -168,7 +174,9 @@ export default function MyDesignsPanel() {
             designs.map((design) => (
               <Card key={design.name} className="bg-card/50">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-base font-semibold">{design.name}</CardTitle>
+                  <CardTitle className="text-base font-semibold">
+                    {design.name}
+                  </CardTitle>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Clock className="h-3 w-3" />
                     {formatTimestamp(design.timestamp)}
@@ -184,7 +192,7 @@ export default function MyDesignsPanel() {
                     <FolderOpen className="h-4 w-4" />
                     Load
                   </Button>
-                  
+
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button
@@ -200,12 +208,15 @@ export default function MyDesignsPanel() {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete Design</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to delete "{design.name}"? This action cannot be undone.
+                          Are you sure you want to delete "{design.name}"? This
+                          action cannot be undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => handleDelete(design.name)}>
+                        <AlertDialogAction
+                          onClick={() => handleDelete(design.name)}
+                        >
                           Delete
                         </AlertDialogAction>
                       </AlertDialogFooter>

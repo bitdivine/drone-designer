@@ -1,8 +1,8 @@
-import { Link, useRouterState } from '@tanstack/react-router';
-import LoginButton from './auth/LoginButton';
-import SignedInBadge from './auth/SignedInBadge';
-import ProfileSetupDialog from './auth/ProfileSetupDialog';
-import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { Link, useRouterState } from "@tanstack/react-router";
+import { useInternetIdentity } from "../hooks/useInternetIdentity";
+import LoginButton from "./auth/LoginButton";
+import ProfileSetupDialog from "./auth/ProfileSetupDialog";
+import SignedInBadge from "./auth/SignedInBadge";
 
 export default function AppHeader() {
   const routerState = useRouterState();
@@ -14,22 +14,27 @@ export default function AppHeader() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between px-4 md:px-8">
         <div className="flex items-center gap-6">
-          <Link to="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
-            <img 
-              src="/assets/generated/drone-logo.dim_512x512.png" 
-              alt="Drone Designer" 
+          <Link
+            to="/"
+            className="flex items-center gap-3 transition-opacity hover:opacity-80"
+          >
+            <img
+              src="/assets/generated/drone-logo.dim_512x512.png"
+              alt="Drone Designer"
               className="h-9 w-9"
             />
-            <span className="text-xl font-bold tracking-tight">Drone Designer</span>
+            <span className="text-xl font-bold tracking-tight">
+              Drone Designer
+            </span>
           </Link>
-          
+
           <nav className="hidden md:flex items-center gap-1">
             <Link
               to="/"
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                currentPath === '/' 
-                  ? 'bg-accent text-accent-foreground' 
-                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                currentPath === "/"
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
               }`}
             >
               Home
@@ -37,9 +42,9 @@ export default function AppHeader() {
             <Link
               to="/workspace"
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                currentPath === '/workspace' 
-                  ? 'bg-accent text-accent-foreground' 
-                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                currentPath === "/workspace"
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
               }`}
             >
               Workspace
@@ -52,7 +57,7 @@ export default function AppHeader() {
           <LoginButton />
         </div>
       </div>
-      
+
       <ProfileSetupDialog />
     </header>
   );
