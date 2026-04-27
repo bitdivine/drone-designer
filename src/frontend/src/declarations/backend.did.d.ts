@@ -15,6 +15,31 @@ export interface DroneDesign {
   'timestamp' : bigint,
   'designData' : string,
 }
+export interface Part {
+  'id' : string,
+  'weight' : number,
+  'owner' : Principal,
+  'name' : string,
+  'createdAt' : bigint,
+  'isSample' : boolean,
+  'specs' : string,
+  'imageUrl' : [] | [string],
+  'category' : PartCategory,
+}
+export type PartCategory = { 'propeller' : null } |
+  { 'frame' : null } |
+  { 'motor' : null } |
+  { 'flightController' : null } |
+  { 'camera' : null } |
+  { 'battery' : null };
+export interface PartInput {
+  'id' : string,
+  'weight' : number,
+  'name' : string,
+  'specs' : string,
+  'imageUrl' : [] | [string],
+  'category' : PartCategory,
+}
 export interface UserProfile { 'name' : string }
 export type UserRole = { 'admin' : null } |
   { 'user' : null } |
@@ -23,14 +48,17 @@ export interface _SERVICE {
   '_initializeAccessControl' : ActorMethod<[], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'deleteDesign' : ActorMethod<[string], undefined>,
+  'deletePart' : ActorMethod<[string], boolean>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getDesign' : ActorMethod<[string], [] | [DroneDesign]>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'listDesigns' : ActorMethod<[], Array<DroneDesign>>,
+  'listParts' : ActorMethod<[], Array<Part>>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'saveDesign' : ActorMethod<[string, string], undefined>,
+  'savePart' : ActorMethod<[PartInput], string>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

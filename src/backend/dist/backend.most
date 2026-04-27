@@ -14,6 +14,20 @@ type Nat__490723111 = Nat__920180692;
 type Nat__920180692 = Nat;
 type Node__46230540<K, V> =
   {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type PartCategory__865522236 =
+  {#battery; #camera; #flightController; #frame; #motor; #propeller};
+type Part__1030646396 =
+  {
+    category : PartCategory__865522236;
+    createdAt : Int;
+    id : Text;
+    imageUrl : ?Text;
+    isSample : Bool;
+    name : Text;
+    owner : Principal;
+    specs : Text;
+    weight : Float
+  };
 type UserDesigns__1057724107 =
   {designs : Map__605269027<Text, DroneDesign__558481709>};
 type UserProfile__491224006 = {name : Text};
@@ -23,6 +37,11 @@ actor {
     {
       var adminAssigned : Bool;
       userRoles : Map__605269027<Principal, UserRole__1073662873>
+    };
+  stable parts :
+    {
+      var root : Node__46230540<Text, Part__1030646396>;
+      var size : Nat__490723111
     };
   stable userDesignsMap :
     {

@@ -5,6 +5,36 @@ type UserRole =
    user;
  };
 type UserProfile = record {name: text;};
+type PartInput = 
+ record {
+   category: PartCategory;
+   id: text;
+   imageUrl: opt text;
+   name: text;
+   specs: text;
+   weight: float64;
+ };
+type PartCategory = 
+ variant {
+   battery;
+   camera;
+   flightController;
+   frame;
+   motor;
+   propeller;
+ };
+type Part = 
+ record {
+   category: PartCategory;
+   createdAt: int;
+   id: text;
+   imageUrl: opt text;
+   isSample: bool;
+   name: text;
+   owner: principal;
+   specs: text;
+   weight: float64;
+ };
 type DroneDesign = 
  record {
    designData: text;
@@ -15,12 +45,15 @@ service : {
   _initializeAccessControl: () -> ();
   assignCallerUserRole: (user: principal, role: UserRole) -> ();
   deleteDesign: (name: text) -> ();
+  deletePart: (id: text) -> (bool);
   getCallerUserProfile: () -> (opt UserProfile) query;
   getCallerUserRole: () -> (UserRole) query;
   getDesign: (name: text) -> (opt DroneDesign) query;
   getUserProfile: (user: principal) -> (opt UserProfile) query;
   isCallerAdmin: () -> (bool) query;
   listDesigns: () -> (vec DroneDesign) query;
+  listParts: () -> (vec Part) query;
   saveCallerUserProfile: (profile: UserProfile) -> ();
   saveDesign: (name: text, designData: text) -> ();
+  savePart: (input: PartInput) -> (text);
 }

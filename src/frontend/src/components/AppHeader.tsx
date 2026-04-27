@@ -49,6 +49,17 @@ export default function AppHeader() {
             >
               Workspace
             </Link>
+            <Link
+              to="/library"
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                currentPath === "/library"
+                  ? "bg-accent text-accent-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+              }`}
+              data-ocid="nav.library_link"
+            >
+              Component Library
+            </Link>
           </nav>
         </div>
 

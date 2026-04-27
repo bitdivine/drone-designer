@@ -2,13 +2,19 @@ import Map "mo:core/Map";
 import Principal "mo:core/Principal";
 import Runtime "mo:core/Runtime";
 import Time "mo:core/Time";
-import Array "mo:core/Array";
 import MixinAuthorization "mo:caffeineai-authorization/MixinAuthorization";
 import AccessControl "mo:caffeineai-authorization/access-control";
+import PartsLibMixin "mixins/parts-library-api";
+import PartsLib "lib/parts-library";
+import PartsTypes "types/parts-library";
 
 actor {
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
+
+  let parts = Map.empty<Text, PartsTypes.Part>();
+  PartsLib.seedSamples(parts, Time.now());
+  include PartsLibMixin(parts);
 
   public type UserProfile = {
     name : Text;

@@ -1,4 +1,5 @@
 import {
+  Outlet,
   RouterProvider,
   createRootRoute,
   createRoute,
@@ -8,12 +9,13 @@ import { ThemeProvider } from "next-themes";
 import AppShell from "./components/AppShell";
 import { DesignStoreProvider } from "./features/designer/DesignStore";
 import Landing from "./pages/Landing";
+import Library from "./pages/Library";
 import Workspace from "./pages/Workspace";
 
 const rootRoute = createRootRoute({
   component: () => (
     <AppShell>
-      <Landing />
+      <Outlet />
     </AppShell>
   ),
 });
@@ -34,7 +36,17 @@ const workspaceRoute = createRoute({
   ),
 });
 
-const routeTree = rootRoute.addChildren([landingRoute, workspaceRoute]);
+const libraryRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/library",
+  component: Library,
+});
+
+const routeTree = rootRoute.addChildren([
+  landingRoute,
+  workspaceRoute,
+  libraryRoute,
+]);
 
 const router = createRouter({ routeTree });
 

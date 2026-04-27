@@ -19,11 +19,39 @@ export const DroneDesign = IDL.Record({
   'timestamp' : IDL.Int,
   'designData' : IDL.Text,
 });
+export const PartCategory = IDL.Variant({
+  'propeller' : IDL.Null,
+  'frame' : IDL.Null,
+  'motor' : IDL.Null,
+  'flightController' : IDL.Null,
+  'camera' : IDL.Null,
+  'battery' : IDL.Null,
+});
+export const Part = IDL.Record({
+  'id' : IDL.Text,
+  'weight' : IDL.Float64,
+  'owner' : IDL.Principal,
+  'name' : IDL.Text,
+  'createdAt' : IDL.Int,
+  'isSample' : IDL.Bool,
+  'specs' : IDL.Text,
+  'imageUrl' : IDL.Opt(IDL.Text),
+  'category' : PartCategory,
+});
+export const PartInput = IDL.Record({
+  'id' : IDL.Text,
+  'weight' : IDL.Float64,
+  'name' : IDL.Text,
+  'specs' : IDL.Text,
+  'imageUrl' : IDL.Opt(IDL.Text),
+  'category' : PartCategory,
+});
 
 export const idlService = IDL.Service({
   '_initializeAccessControl' : IDL.Func([], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'deleteDesign' : IDL.Func([IDL.Text], [], []),
+  'deletePart' : IDL.Func([IDL.Text], [IDL.Bool], []),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getDesign' : IDL.Func([IDL.Text], [IDL.Opt(DroneDesign)], ['query']),
@@ -34,8 +62,10 @@ export const idlService = IDL.Service({
     ),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'listDesigns' : IDL.Func([], [IDL.Vec(DroneDesign)], ['query']),
+  'listParts' : IDL.Func([], [IDL.Vec(Part)], ['query']),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   'saveDesign' : IDL.Func([IDL.Text, IDL.Text], [], []),
+  'savePart' : IDL.Func([PartInput], [IDL.Text], []),
 });
 
 export const idlInitArgs = [];
@@ -52,11 +82,39 @@ export const idlFactory = ({ IDL }) => {
     'timestamp' : IDL.Int,
     'designData' : IDL.Text,
   });
+  const PartCategory = IDL.Variant({
+    'propeller' : IDL.Null,
+    'frame' : IDL.Null,
+    'motor' : IDL.Null,
+    'flightController' : IDL.Null,
+    'camera' : IDL.Null,
+    'battery' : IDL.Null,
+  });
+  const Part = IDL.Record({
+    'id' : IDL.Text,
+    'weight' : IDL.Float64,
+    'owner' : IDL.Principal,
+    'name' : IDL.Text,
+    'createdAt' : IDL.Int,
+    'isSample' : IDL.Bool,
+    'specs' : IDL.Text,
+    'imageUrl' : IDL.Opt(IDL.Text),
+    'category' : PartCategory,
+  });
+  const PartInput = IDL.Record({
+    'id' : IDL.Text,
+    'weight' : IDL.Float64,
+    'name' : IDL.Text,
+    'specs' : IDL.Text,
+    'imageUrl' : IDL.Opt(IDL.Text),
+    'category' : PartCategory,
+  });
   
   return IDL.Service({
     '_initializeAccessControl' : IDL.Func([], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
     'deleteDesign' : IDL.Func([IDL.Text], [], []),
+    'deletePart' : IDL.Func([IDL.Text], [IDL.Bool], []),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getDesign' : IDL.Func([IDL.Text], [IDL.Opt(DroneDesign)], ['query']),
@@ -67,8 +125,10 @@ export const idlFactory = ({ IDL }) => {
       ),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'listDesigns' : IDL.Func([], [IDL.Vec(DroneDesign)], ['query']),
+    'listParts' : IDL.Func([], [IDL.Vec(Part)], ['query']),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
     'saveDesign' : IDL.Func([IDL.Text, IDL.Text], [], []),
+    'savePart' : IDL.Func([PartInput], [IDL.Text], []),
   });
 };
 

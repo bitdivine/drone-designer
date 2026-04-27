@@ -89,6 +89,25 @@ export class ExternalBlob {
         return this;
     }
 }
+export interface Part {
+    id: string;
+    weight: number;
+    owner: Principal;
+    name: string;
+    createdAt: bigint;
+    isSample: boolean;
+    specs: string;
+    imageUrl?: string;
+    category: PartCategory;
+}
+export interface PartInput {
+    id: string;
+    weight: number;
+    name: string;
+    specs: string;
+    imageUrl?: string;
+    category: PartCategory;
+}
 export interface DroneDesign {
     name: string;
     timestamp: bigint;
@@ -96,6 +115,14 @@ export interface DroneDesign {
 }
 export interface UserProfile {
     name: string;
+}
+export enum PartCategory {
+    propeller = "propeller",
+    frame = "frame",
+    motor = "motor",
+    flightController = "flightController",
+    camera = "camera",
+    battery = "battery"
 }
 export enum UserRole {
     admin = "admin",
@@ -106,16 +133,19 @@ export interface backendInterface {
     _initializeAccessControl(): Promise<void>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     deleteDesign(name: string): Promise<void>;
+    deletePart(id: string): Promise<boolean>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getDesign(name: string): Promise<DroneDesign | null>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;
     listDesigns(): Promise<Array<DroneDesign>>;
+    listParts(): Promise<Array<Part>>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
     saveDesign(name: string, designData: string): Promise<void>;
+    savePart(input: PartInput): Promise<string>;
 }
-import type { DroneDesign as _DroneDesign, UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
+import type { DroneDesign as _DroneDesign, Part as _Part, PartCategory as _PartCategory, PartInput as _PartInput, UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
     async _initializeAccessControl(): Promise<void> {
@@ -157,6 +187,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.deleteDesign(arg0);
+            return result;
+        }
+    }
+    async deletePart(arg0: string): Promise<boolean> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.deletePart(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.deletePart(arg0);
             return result;
         }
     }
@@ -244,6 +288,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async listParts(): Promise<Array<Part>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.listParts();
+                return from_candid_vec_n7(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.listParts();
+            return from_candid_vec_n7(this._uploadFile, this._downloadFile, result);
+        }
+    }
     async saveCallerUserProfile(arg0: UserProfile): Promise<void> {
         if (this.processError) {
             try {
@@ -272,15 +330,86 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async savePart(arg0: PartInput): Promise<string> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.savePart(to_candid_PartInput_n13(this._uploadFile, this._downloadFile, arg0));
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.savePart(to_candid_PartInput_n13(this._uploadFile, this._downloadFile, arg0));
+            return result;
+        }
+    }
+}
+function from_candid_PartCategory_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _PartCategory): PartCategory {
+    return from_candid_variant_n12(_uploadFile, _downloadFile, value);
+}
+function from_candid_Part_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Part): Part {
+    return from_candid_record_n9(_uploadFile, _downloadFile, value);
 }
 function from_candid_UserRole_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _UserRole): UserRole {
     return from_candid_variant_n5(_uploadFile, _downloadFile, value);
+}
+function from_candid_opt_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [string]): string | null {
+    return value.length === 0 ? null : value[0];
 }
 function from_candid_opt_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_UserProfile]): UserProfile | null {
     return value.length === 0 ? null : value[0];
 }
 function from_candid_opt_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_DroneDesign]): DroneDesign | null {
     return value.length === 0 ? null : value[0];
+}
+function from_candid_record_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    id: string;
+    weight: number;
+    owner: Principal;
+    name: string;
+    createdAt: bigint;
+    isSample: boolean;
+    specs: string;
+    imageUrl: [] | [string];
+    category: _PartCategory;
+}): {
+    id: string;
+    weight: number;
+    owner: Principal;
+    name: string;
+    createdAt: bigint;
+    isSample: boolean;
+    specs: string;
+    imageUrl?: string;
+    category: PartCategory;
+} {
+    return {
+        id: value.id,
+        weight: value.weight,
+        owner: value.owner,
+        name: value.name,
+        createdAt: value.createdAt,
+        isSample: value.isSample,
+        specs: value.specs,
+        imageUrl: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.imageUrl)),
+        category: from_candid_PartCategory_n11(_uploadFile, _downloadFile, value.category)
+    };
+}
+function from_candid_variant_n12(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    propeller: null;
+} | {
+    frame: null;
+} | {
+    motor: null;
+} | {
+    flightController: null;
+} | {
+    camera: null;
+} | {
+    battery: null;
+}): PartCategory {
+    return "propeller" in value ? PartCategory.propeller : "frame" in value ? PartCategory.frame : "motor" in value ? PartCategory.motor : "flightController" in value ? PartCategory.flightController : "camera" in value ? PartCategory.camera : "battery" in value ? PartCategory.battery : value;
 }
 function from_candid_variant_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     admin: null;
@@ -291,8 +420,68 @@ function from_candid_variant_n5(_uploadFile: (file: ExternalBlob) => Promise<Uin
 }): UserRole {
     return "admin" in value ? UserRole.admin : "user" in value ? UserRole.user : "guest" in value ? UserRole.guest : value;
 }
+function from_candid_vec_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_Part>): Array<Part> {
+    return value.map((x)=>from_candid_Part_n8(_uploadFile, _downloadFile, x));
+}
+function to_candid_PartCategory_n15(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: PartCategory): _PartCategory {
+    return to_candid_variant_n16(_uploadFile, _downloadFile, value);
+}
+function to_candid_PartInput_n13(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: PartInput): _PartInput {
+    return to_candid_record_n14(_uploadFile, _downloadFile, value);
+}
 function to_candid_UserRole_n1(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): _UserRole {
     return to_candid_variant_n2(_uploadFile, _downloadFile, value);
+}
+function to_candid_record_n14(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    id: string;
+    weight: number;
+    name: string;
+    specs: string;
+    imageUrl?: string;
+    category: PartCategory;
+}): {
+    id: string;
+    weight: number;
+    name: string;
+    specs: string;
+    imageUrl: [] | [string];
+    category: _PartCategory;
+} {
+    return {
+        id: value.id,
+        weight: value.weight,
+        name: value.name,
+        specs: value.specs,
+        imageUrl: value.imageUrl ? candid_some(value.imageUrl) : candid_none(),
+        category: to_candid_PartCategory_n15(_uploadFile, _downloadFile, value.category)
+    };
+}
+function to_candid_variant_n16(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: PartCategory): {
+    propeller: null;
+} | {
+    frame: null;
+} | {
+    motor: null;
+} | {
+    flightController: null;
+} | {
+    camera: null;
+} | {
+    battery: null;
+} {
+    return value == PartCategory.propeller ? {
+        propeller: null
+    } : value == PartCategory.frame ? {
+        frame: null
+    } : value == PartCategory.motor ? {
+        motor: null
+    } : value == PartCategory.flightController ? {
+        flightController: null
+    } : value == PartCategory.camera ? {
+        camera: null
+    } : value == PartCategory.battery ? {
+        battery: null
+    } : value;
 }
 function to_candid_variant_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): {
     admin: null;

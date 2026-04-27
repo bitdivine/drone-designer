@@ -1,0 +1,20 @@
+{
+  "overview": "A web-based drone design tool where users can design drones and manage modular components. Supports browsing and uploading individual drone parts with images, saving designs, and signing in with Internet Identity.",
+  "features": [
+    "Component Library with image upload for parts",
+    "Browse parts by category (frames, motors, props, batteries, flight controllers, cameras)",
+    "Part creation and editing with image preview",
+    "Drone design workspace",
+    "Internet Identity authentication",
+    "Search and filter parts"
+  ],
+  "category": "productivity",
+  "tags": [
+    "drone",
+    "design",
+    "component-library",
+    "image-upload",
+    "parts-management"
+  ],
+  "last_updated": "2026-04-27T21:04:04.852Z"
+}

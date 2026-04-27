@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Box, Calculator, Save, Zap } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 
 export default function Landing() {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col">
@@ -80,21 +81,31 @@ export default function Landing() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="border-border/50 bg-card/50 backdrop-blur">
-              <CardContent className="pt-6 space-y-4">
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Box className="h-6 w-6 text-primary" />
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-semibold">Component Library</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Choose from frames, motors, props, batteries, flight
-                    controllers, and cameras to build your perfect
-                    configuration.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <button
+              type="button"
+              className="cursor-pointer text-left w-full"
+              onClick={() => navigate({ to: "/library" })}
+              data-ocid="landing.component_library_card"
+            >
+              <Card className="border-border/50 bg-card/50 backdrop-blur transition-colors duration-200 hover:border-primary/50 hover:bg-card/80 h-full">
+                <CardContent className="pt-6 space-y-4">
+                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Box className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-semibold flex items-center gap-2">
+                      Component Library
+                      <ArrowRight className="h-4 w-4 text-primary opacity-60" />
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Choose from frames, motors, props, batteries, flight
+                      controllers, and cameras to build your perfect
+                      configuration.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </button>
 
             <Card className="border-border/50 bg-card/50 backdrop-blur">
               <CardContent className="pt-6 space-y-4">
